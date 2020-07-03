@@ -15,6 +15,9 @@ text(4.3, 1300, table(houses_to_rent_v2$city[houses_to_rent_v2$city == "Rio de J
 text(5.5, 5000, table(houses_to_rent_v2$city[houses_to_rent_v2$city == "São Paulo"]))
 
 #Obtendo o gráfico, vamos agora buscar quantas casas existem em São Paulo com 27m²
+SP <- houses_to_rent_v2$city[houses_to_rent_v2$city == "São Paulo"] 
+table(SP[houses_to_rent_v2$area == 27]) #Resulta em 9 imóveis que satisfazem a condição.
+
 
 #obj: Encontrar quantas casas satisfazem as condições: SP,27m², 2 quartos, 1 banheiro, 1 estacionamento, cerca de $180k no total (7.5k por mês, dois anos). Qual a % de casas que satisfazem as condições? Do custo total, quantos % são destinados a imposto, seguro, condomínio e aluguel?  
 
