@@ -7,5 +7,7 @@ houses_to_rent_v2$floor[houses_to_rent_v2$floor== "-"] <- 0 #Substitui os valore
 summary(houses_to_rent_v2[,])
 
 #Gráfico de barras ilustrando a quantidade de casas por cidade.
-barplot(table(houses_to_rent_v2$city)) #é possível utilizar esse comando para qualquer coluna com baixa variação de dados. Ex: rooms, bathroom, parking spaces, floor.
+barplot(table(houses_to_rent_v2$city)) #é possível utilizar esse comando para qualquer coluna com baixa variação de dados. Ex: rooms, bathroom, parking spaces, floor
+
+#obj: Encontrar quantas casas satisfazem as condições: SP,27m², 2 quartos, 1 banheiro, 1 estacionamento, cerca de $180k no total (7.5k por mês, dois anos). Qual a % de casas que satisfazem as condições? Do custo total, quantos % são destinados a imposto, seguro, condomínio e aluguel?  
 
