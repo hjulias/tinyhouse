@@ -1,0 +1,11 @@
+#O dataset utilizado é "houses_to_rent_v2". O objetivo é analisar a maior quantidade de dados possível até chegar a conclusão de quantas casas são potenciais "Tiny Houses".
+
+#Verificação de inconsistências 
+houses_to_rent_v2$floor[houses_to_rent_v2$floor== "-"] <- 0 #Substitui os valores - na coluna "floor" por 0. Demonstra que nenhum andar da casa fora construído até o momento.
+
+#Para obter os quartis, médias e medianas de uma vez para todas as variáveis, use o comando:
+summary(houses_to_rent_v2[,])
+
+#Gráfico de barras ilustrando a quantidade de casas por cidade.
+barplot(table(houses_to_rent_v2$city)) #é possível utilizar esse comando para qualquer coluna com baixa variação de dados. Ex: rooms, bathroom, parking spaces, floor.
+
