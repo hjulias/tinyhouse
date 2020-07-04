@@ -22,7 +22,14 @@ text(5.5, 5000, table(cidadesv2[cidadesv2 == "São Paulo"]))
 SP <- cidadesv2[cidadesv2 == "São Paulo"] 
 table(SP) #retorna um total de 5887 casas.
 table(SP[area_casa == 27]) #Resulta em 9 imóveis que satisfazem a condição de ter 27m²
+
 #Gráfico de dispersão mostrando qnt de casas por área em SP
+area_casa[cidadesv2 == "São Paulo"] #definindo quais são as áreas de SP
+summary(table(area_casa[cidadesv2 == "São Paulo"])) #conferindo valores
+area_casaSP <- area_casa[cidadesv2 == "São Paulo"] 
+
+#Montar uma tabela com SP e area_casaSP
+reducedSP <- data.frame(Cidade = SP, Area = area_casaSP)
 
 
 #obj: Encontrar quantas casas satisfazem as condições: SP,27m², 2 quartos, 1 banheiro, 1 estacionamento, cerca de $180k no total (7.5k por mês, dois anos). Qual a % de casas que satisfazem as condições? Do custo total, quantos % são destinados a imposto, seguro, condomínio e aluguel?  
