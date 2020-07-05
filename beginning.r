@@ -28,6 +28,8 @@ area_casa[cidadesv2 == "São Paulo"] #definindo quais são as áreas de SP
 summary(table(area_casa[cidadesv2 == "São Paulo"])) #conferindo valores
 area_casaSP <- area_casa[cidadesv2 == "São Paulo"] 
 
+as.data.frame(table(area_casaSP)) #monta um df com duas colunas, sendo área das casas paulistas a primeira e frequência a segunda. 
+
 #Montar uma tabela com SP e area_casaSP
 reducedSP <- data.frame(Cidade = SP, Area = area_casaSP)
 
