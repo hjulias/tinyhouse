@@ -28,11 +28,17 @@ area_casa[cidadesv2 == "São Paulo"] #definindo quais são as áreas de SP
 summary(table(area_casa[cidadesv2 == "São Paulo"])) #conferindo valores
 area_casaSP <- area_casa[cidadesv2 == "São Paulo"] 
 
-as.data.frame(table(area_casaSP)) #monta um df com duas colunas, sendo área das casas paulistas a primeira e frequência a segunda. 
-
-#Montar uma tabela com SP e area_casaSP
-reducedSP <- data.frame(Cidade = SP, Area = area_casaSP)
-
+#Gráfico mostrando quantas casas com 27m² existem em São Paulo
+df <- data.frame(table(area_casaSP)) #atribui a df um data frame com duas colunas, sendo área das casas paulistas a primeira e frequência a segunda. 
+x <- df[,2] #são os valores da segunda coluna de df
+y <- as.numeric(levels(df[,1])) #São os valores da primeira coluna de df; dessa forma, y passa de factor para numeric.
+par(mfrow = c(2,2), mar=c(3,3,2,2), oma=c(3,3,2,2))
+plot(x,y, col = ifelse(x==9 & y == 27, "green", "black"), main = "Quantidade de casas por área em São Paulo")
+plot(x,y,xlim = c(0,1000), ylim = c(0,1000), col = ifelse(x==9 & y == 27, "green", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x25)")
+plot(x,y,xlim = c(0,100), ylim = c(0,100), col = ifelse(x==9 & y == 27, "green", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x250)")
+plot(x,y,xlim = c(0,30), ylim = c(0,30), col = ifelse(x==9 & y == 27, "green", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x833)")
+mtext(side=1, text="N° de Casas", outer=T)
+mtext(side=2, text="Área em m²", outer=T)
+legend("bottomright", legend="Casas com 27m²", bty="n", fill = "green")
 
 #obj: Encontrar quantas casas satisfazem as condições: SP,27m², 2 quartos, 1 banheiro, 1 estacionamento, cerca de $180k no total (7.5k por mês, dois anos). Qual a % de casas que satisfazem as condições? Do custo total, quantos % são destinados a imposto, seguro, condomínio e aluguel?  
-
