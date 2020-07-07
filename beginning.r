@@ -18,18 +18,18 @@ text(3.1, 900, table(cidadesv2[cidadesv2 == "Porto Alegre"]))
 text(4.3, 1300, table(cidadesv2[cidadesv2 == "Rio de Janeiro"]))
 text(5.5, 5000, table(cidadesv2[cidadesv2 == "São Paulo"]))
 
-#Obtendo o gráfico, vamos agora buscar quantas casas existem em São Paulo.
+#Antes de obter o gráfico, vamos conferir quantas casas existem em SP e quantas possuem 27m².
 SP <- cidadesv2[cidadesv2 == "São Paulo"] 
 table(SP) #retorna um total de 5887 casas.
 table(SP[area_casa == 27]) #Resulta em 9 imóveis que satisfazem a condição de ter 27m²
 
 #Gráfico de dispersão mostrando qnt de casas por área em SP
-area_casa[cidadesv2 == "São Paulo"] #definindo quais são as áreas de SP
+area_casaSP <- area_casa[cidadesv2 == "São Paulo"] #definindo quais são as áreas de SP
 summary(table(area_casa[cidadesv2 == "São Paulo"])) #conferindo valores
-area_casaSP <- area_casa[cidadesv2 == "São Paulo"] 
 
 #Gráfico mostrando quantas casas com 27m² existem em São Paulo
-df <- data.frame(table(area_casaSP)) #atribui a df um data frame com duas colunas, sendo área das casas paulistas a primeira e frequência a segunda. 
+df <- data.frame(table(area_casaSP)) #atribui a df um data frame com duas colunas, sendo "área das casas paulistas" a primeira e "frequência" a segunda.
+#atenção: SP possui 5887 casas, mas df exibe 451 valores pois atribui, para cada área, uma quantidade de casas.  
 x <- df[,2] #são os valores da segunda coluna de df
 y <- as.numeric(levels(df[,1])) #São os valores da primeira coluna de df; dessa forma, y passa de factor para numeric.
 par(mfrow = c(2,2), mar=c(3,3,2,2), oma=c(3,3,2,2))
@@ -40,5 +40,32 @@ plot(x,y,xlim = c(0,30), ylim = c(0,30), col = ifelse(x==9 & y == 27, "green", "
 mtext(side=1, text="N° de Casas", outer=T)
 mtext(side=2, text="Área em m²", outer=T)
 legend("bottomright", legend="Casas com 27m²", bty="n", fill = "green")
+
+#Agora, filtraremos nossa busca para descobrir quantas dessas 9 casas possuem dois quartos.
+quartos <- houses_to_rent_v2$rooms[houses_to_rent_v2$city == "São Paulo"] #criando uma variável que agrupa todos os quartos das casas de SP.
+reducedSP["Quartos"] <- quartos #adicionando a variável ao df.
+reducedSP[reducedSP$Area == 27 & reducedSP$Quartos == 2,] #Não existem casas de 27m² com 2 quartos. 
+reducedSP[reducedSP$Area == 27,] #nos mostra que todas as casas de 27m² possuem apenas 1 quarto.
+
+barplot(reducedSP[reducedSP$Area == 27,][,3],reducedSP[reducedSP$Area == 27,][,2], ylim = c(0,2), xlab = "Casas em SP com 27m²", ylab = "Qnt. de quartos", col = "blue", main = "Quantidade de quartos em casas paulistas de 27m²" )
+
+#Quantas dessas 9 casas possuem 1 banheiro?
+banheiro <- houses_to_rent_v2$bathroom[houses_to_rent_v2$city == "São Paulo"]
+reducedSP["Banheiros"] <- banheiro
+reducedSP[reducedSP$Area == 27 & reducedSP$Banheiros == 1,]
+
+barplot(reducedSP[reducedSP$Area == 27,][,4],reducedSP[reducedSP$Area == 27,][,2], ylim = c(0,2), xlab = "Casas em SP com 27m²", ylab = "Qnt. de banheiros", col = "pink", main = "Quantidade de banheiros em casas paulistas de 27m²" )
+
+#Quantas dessas 9 casas possuem 1 vaga de estacionamento?
+vaga <- houses_to_rent_v2$`parking spaces`[houses_to_rent_v2$city == "São Paulo"]
+reducedSP["Vagas"] <- vaga
+reducedSP[reducedSP$Area == 27 & reducedSP$Vagas == 1,]
+
+barplot(reducedSP[reducedSP$Area == 27,][,5],reducedSP[reducedSP$Area == 27,][,2], ylim = c(0,2), xlab = "Casas em SP com 27m²", ylab = "Qnt. de vagas de estacionamento", col = "yellow", main = "Quantidade de vagas de estacionamento em casas paulistas de 27m²" )
+
+#Desprezando as colunas seguintes, passaremos a analisar qual das duas casas possuem um custo mensal total inferior a 7.5k.
+totaldindin <- houses_to_rent_v2$`total (R$)`[houses_to_rent_v2$city == "São Paulo"]
+reducedSP["Total $"] <- totaldindin
+reducedSP[reducedSP$Area == 27 & reducedSP$Vagas==1,]
 
 #obj: Encontrar quantas casas satisfazem as condições: SP,27m², 2 quartos, 1 banheiro, 1 estacionamento, cerca de $180k no total (7.5k por mês, dois anos). Qual a % de casas que satisfazem as condições? Do custo total, quantos % são destinados a imposto, seguro, condomínio e aluguel?  
