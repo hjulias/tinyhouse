@@ -41,6 +41,22 @@ mtext(side=1, text="N° de Casas", outer=T)
 mtext(side=2, text="Área em m²", outer=T)
 legend("bottomright", legend="Casas com 27m²", bty="n", fill = "green")
 
+####RASCUNHO
+reducedSP <- data.frame(table(area_casaSP))
+
+x <- reducedSP[,2] #são os valores da segunda coluna de reducedSP
+y <- as.numeric(levels(reducedSP[,1])) #São os valores da primeira coluna de reducedSP; dessa forma, y passa de factor para numeric.
+
+par(mfrow = c(2,2), mar=c(3,3,2,2), oma=c(3,3,2,2))
+plot(x,y, col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo")
+plot(x,y,xlim = c(0,1000), ylim = c(0,1000), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x25)")
+plot(x,y,xlim = c(0,100), ylim = c(0,100), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x250)")
+plot(x,y,xlim = c(0,30), ylim = c(0,30), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x833)")
+mtext(side=1, text="N° de Casas", outer=T)
+mtext(side=2, text="Área em m²", outer=T)
+legend("bottomright", legend="Casas com 27m²", bty="n", fill = "red")
+###################
+
 #Agora, filtraremos nossa busca para descobrir quantas dessas 9 casas possuem dois quartos.
 quartos <- houses_to_rent_v2$rooms[houses_to_rent_v2$city == "São Paulo"] #criando uma variável que agrupa todos os quartos das casas de SP.
 reducedSP["Quartos"] <- quartos #adicionando a variável ao df.
