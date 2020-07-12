@@ -1,87 +1,122 @@
-#O dataset utilizado é "houses_to_rent_v2". O objetivo é analisar a maior quantidade de dados possível até chegar a conclusão de quantas casas são potenciais "Tiny Houses".
-#Criar variáveis mais simples
-andares <- houses_to_rent_v2$floor
-cidadesv2 <- houses_to_rent_v2$city
-area_casa <- houses_to_rent_v2$area
+#Organizando dados de "houses_to_rent_v2"
+andares <- houses_to_rent_v2$floor 
+cidadesv2 <- houses_to_rent_v2$city 
+area_casa <- houses_to_rent_v2$area 
 
-#Verificação de inconsistências 
-andares[andares== "-"] <- 0 #Substitui os valores - na coluna "floor" por 0. Demonstra que nenhum andar da casa fora construído até o momento.
+#Verificando a existência de inconsistências e corrigindo-as 
+andares[andares== "-"] <- 0 #Substitui os valores - na coluna "floor" por 0. Demonstra que nenhum andar da casa fora construído até o momento. 
 
-#Para obter os quartis, médias e medianas de uma vez para todas as variáveis, use o comando:
 summary(houses_to_rent_v2[,])
-
-#Gráfico de barras ilustrando a quantidade de casas por cidade.
-barplot(table(cidadesv2), xlab = "Cidades", ylab = "N de Casas", col = c("pink", "green", "yellow", "red", "blue"), main = "Quantidade de casas por cidade") #é possível utilizar esse comando para qualquer coluna com baixa variação de dados. Ex: rooms, bathroom, parking spaces, floor. xlab indica o nome do eixo das abscissas (X), e ylab das ordenadas(Y).
-text(0.7, 900, table(cidadesv2[cidadesv2 == "Belo Horizonte"]))
-text(1.9, 600, table(cidadesv2[cidadesv2 == "Campinas"]))
-text(3.1, 900, table(cidadesv2[cidadesv2 == "Porto Alegre"]))
-text(4.3, 1300, table(cidadesv2[cidadesv2 == "Rio de Janeiro"]))
+        
+#Criando gráfico de barras para ilustrar a quantidade de casas por cidade
+barplot(table(cidadesv2), xlab = "Cidades", ylab = "N° de Casas", col = c("cyan3" , "cyan1", "cyan2", "cyan4", "blue"), main = "Quantidade de casas por cidade", ylim = c(0,6000))  
+text(0.7, 900, table(cidadesv2[cidadesv2 == "Belo Horizonte"])) 
+text(1.9, 600, table(cidadesv2[cidadesv2 == "Campinas"])) 
+text(3.1, 900, table(cidadesv2[cidadesv2 == "Porto Alegre"])) 
+text(4.3, 1300, table(cidadesv2[cidadesv2 == "Rio de Janeiro"])) 
 text(5.5, 5000, table(cidadesv2[cidadesv2 == "São Paulo"]))
 
-#Antes de obter o gráfico, vamos conferir quantas casas existem em SP e quantas possuem 27m².
+#Atribuindo à variável SP os dados que se relacionam com a cidade de São Paulo, a visualização e escrita do código é simplificada. 
 SP <- cidadesv2[cidadesv2 == "São Paulo"] 
-table(SP) #retorna um total de 5887 casas.
-table(SP[area_casa == 27]) #Resulta em 9 imóveis que satisfazem a condição de ter 27m²
+area_casaSP <- area_casa[cidadesv2 == "São Paulo"] #possui a área de todas as casas localizadas em São Paulo. 
 
-#Gráfico de dispersão mostrando qnt de casas por área em SP
-area_casaSP <- area_casa[cidadesv2 == "São Paulo"] #definindo quais são as áreas de SP
-summary(table(area_casa[cidadesv2 == "São Paulo"])) #conferindo valores
+#agora, veremos quantas dessas casas tem área = 27m². table(SP[area_casa == 27])
+reducedSP <- data.frame(table(area_casaSP)) 
+x <- reducedSP[,2] #são os valores da segunda coluna de reducedSP 
+y <- as.numeric(levels(reducedSP[,1])) #São os valores da primeira coluna de reducedSP; dessa forma, y passa de factor para numeric. 
 
-#Gráfico mostrando quantas casas com 27m² existem em São Paulo
-df <- data.frame(table(area_casaSP)) #atribui a df um data frame com duas colunas, sendo "área das casas paulistas" a primeira e "frequência" a segunda.
-#atenção: SP possui 5887 casas, mas df exibe 451 valores pois atribui, para cada área, uma quantidade de casas.  
-x <- df[,2] #são os valores da segunda coluna de df
-y <- as.numeric(levels(df[,1])) #São os valores da primeira coluna de df; dessa forma, y passa de factor para numeric.
-par(mfrow = c(2,2), mar=c(3,3,2,2), oma=c(3,3,2,2))
-plot(x,y, col = ifelse(x==9 & y == 27, "green", "black"), main = "Quantidade de casas por área em São Paulo")
-plot(x,y,xlim = c(0,1000), ylim = c(0,1000), col = ifelse(x==9 & y == 27, "green", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x25)")
-plot(x,y,xlim = c(0,100), ylim = c(0,100), col = ifelse(x==9 & y == 27, "green", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x250)")
-plot(x,y,xlim = c(0,30), ylim = c(0,30), col = ifelse(x==9 & y == 27, "green", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x833)")
-mtext(side=1, text="N° de Casas", outer=T)
+#Gráfico para ilustrar a quantidade de casas em sp
+par(mfrow = c(1,2), mar=c(3,3,2,2), oma=c(3,3,2,2)) 
+plot(x,y, col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo") 
+plot(x,y,xlim = c(0,1000), ylim = c(0,1000), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x25)") 
+mtext(side=1, text="N° de Casas", outer=T) 
 mtext(side=2, text="Área em m²", outer=T)
-legend("bottomright", legend="Casas com 27m²", bty="n", fill = "green")
 
-####RASCUNHO
-reducedSP <- data.frame(table(area_casaSP))
+#Gráfico para ilustrar a quantidade de casas com 27m² em sp
+par(mfrow = c(1,2), mar=c(3,3,2,2), oma=c(3,3,2,2)) 
+plot(x,y,xlim = c(0,100), ylim = c(0,100), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x250)") 
+plot(x,y,xlim = c(0,30), ylim = c(0,30), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x833)") 
+mtext(side=1, text="N° de Casas", outer=T) 
+mtext(side=2, text="Área em m²", outer=T) 
+legend("bottomright", legend="Casas com 27m²", bty="n", fill = "red") 
 
-x <- reducedSP[,2] #são os valores da segunda coluna de reducedSP
-y <- as.numeric(levels(reducedSP[,1])) #São os valores da primeira coluna de reducedSP; dessa forma, y passa de factor para numeric.
+#Criando “sphouses” 
+sphouses <- data.frame(area_casaSP) 
 
-par(mfrow = c(2,2), mar=c(3,3,2,2), oma=c(3,3,2,2))
-plot(x,y, col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo")
-plot(x,y,xlim = c(0,1000), ylim = c(0,1000), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x25)")
-plot(x,y,xlim = c(0,100), ylim = c(0,100), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x250)")
-plot(x,y,xlim = c(0,30), ylim = c(0,30), col = ifelse(x==9 & y == 27, "red", "black"), main = "Quantidade de casas por área em São Paulo (ampliado x833)")
-mtext(side=1, text="N° de Casas", outer=T)
-mtext(side=2, text="Área em m²", outer=T)
-legend("bottomright", legend="Casas com 27m²", bty="n", fill = "red")
-###################
+#Adicionando a coluna “Quartos” 
+quartos <- houses_to_rent_v2$rooms[houses_to_rent_v2$city == "São Paulo"] 
+sphouses["Quartos"] <-quartos 
 
-#Agora, filtraremos nossa busca para descobrir quantas dessas 9 casas possuem dois quartos.
-quartos <- houses_to_rent_v2$rooms[houses_to_rent_v2$city == "São Paulo"] #criando uma variável que agrupa todos os quartos das casas de SP.
-reducedSP["Quartos"] <- quartos #adicionando a variável ao df.
-reducedSP[reducedSP$Area == 27 & reducedSP$Quartos == 2,] #Não existem casas de 27m² com 2 quartos. 
-reducedSP[reducedSP$Area == 27,] #nos mostra que todas as casas de 27m² possuem apenas 1 quarto.
+#Adicionando a coluna “Banheiros” 
+banheiros <- houses_to_rent_v2$bathroom[houses_to_rent_v2$city == "São Paulo"] 
+sphouses["Banheiros"] <- banheiros 
 
-barplot(reducedSP[reducedSP$Area == 27,][,3],reducedSP[reducedSP$Area == 27,][,2], ylim = c(0,2), xlab = "Casas em SP com 27m²", ylab = "Qnt. de quartos", col = "blue", main = "Quantidade de quartos em casas paulistas de 27m²" )
+#Adicionando a coluna “Vagas” 
+vagas <- houses_to_rent_v2$parking.spaces[houses_to_rent_v2$city == "São Paulo"] 
+sphouses["Vagas"] <- vagas 
 
-#Quantas dessas 9 casas possuem 1 banheiro?
-banheiro <- houses_to_rent_v2$bathroom[houses_to_rent_v2$city == "São Paulo"]
-reducedSP["Banheiros"] <- banheiro
-reducedSP[reducedSP$Area == 27 & reducedSP$Banheiros == 1,]
+#Adicionando a coluna “Hoa” 
+hoa <- houses_to_rent_v2$hoa..R..[houses_to_rent_v2$city == "São Paulo"] 
+sphouses["Hoa"] <- hoa 
 
-barplot(reducedSP[reducedSP$Area == 27,][,4],reducedSP[reducedSP$Area == 27,][,2], ylim = c(0,2), xlab = "Casas em SP com 27m²", ylab = "Qnt. de banheiros", col = "pink", main = "Quantidade de banheiros em casas paulistas de 27m²" )
+#Adicionando a coluna “Rent Amount” 
+rentamount <- houses_to_rent_v2$rent.amount..R..[houses_to_rent_v2$city == "São Paulo"]
+sphouses["Rent Amount"] <- rentamount 
 
-#Quantas dessas 9 casas possuem 1 vaga de estacionamento?
-vaga <- houses_to_rent_v2$`parking spaces`[houses_to_rent_v2$city == "São Paulo"]
-reducedSP["Vagas"] <- vaga
-reducedSP[reducedSP$Area == 27 & reducedSP$Vagas == 1,]
+#Adicionando a coluna “Property Tax” 
+propertytax <- houses_to_rent_v2$property.tax..R..[houses_to_rent_v2$city == "São Paulo"]
+sphouses["Property Tax"] <- propertytax 
 
-barplot(reducedSP[reducedSP$Area == 27,][,5],reducedSP[reducedSP$Area == 27,][,2], ylim = c(0,2), xlab = "Casas em SP com 27m²", ylab = "Qnt. de vagas de estacionamento", col = "yellow", main = "Quantidade de vagas de estacionamento em casas paulistas de 27m²" )
+#Adicionando a coluna “Fire Insurance” 
+fireinsur <- houses_to_rent_v2$fire.insurance..R..[houses_to_rent_v2$city == "São Paulo"]
+sphouses["Fire Insurance"] <- fireinsur 
 
-#Desprezando as colunas seguintes, passaremos a analisar qual das duas casas possuem um custo mensal total inferior a 7.5k.
-totaldindin <- houses_to_rent_v2$`total (R$)`[houses_to_rent_v2$city == "São Paulo"]
-reducedSP["Total $"] <- totaldindin
-reducedSP[reducedSP$Area == 27 & reducedSP$Vagas==1,]
+#Adicionando a coluna “Total” 
+total <- houses_to_rent_v2$total..R..[houses_to_rent_v2$city == "São Paulo"]
+sphouses["Total"] <- total 
 
-#obj: Encontrar quantas casas satisfazem as condições: SP,27m², 2 quartos, 1 banheiro, 1 estacionamento, cerca de $180k no total (7.5k por mês, dois anos). Qual a % de casas que satisfazem as condições? Do custo total, quantos % são destinados a imposto, seguro, condomínio e aluguel?  
+#Procurando quartos == 2
+sphouses[sphouses$area_casaSP == 27 & sphouses$Quartos == 2,]
+
+#Adequando o numero de quartos
+
+potentialth <- sphouses[sphouses$area_casaSP == 27 & sphouses$Quartos == 1 & sphouses$Banheiros == 1 & sphouses$Vagas== 1,] 
+print(potentialth)
+
+#CUSTOS
+
+#Criando a variável com os dados da primeira linha de “sphouses” e colunas que se relacionam com os custos totais. 
+casa1176 <- (potentialth[1,c(5,6,7,8,9)]) 
+
+#Atribuindo cada valor da coluna a uma variável 
+casa1cond <- casa1176[,1]  
+casa1alug <- casa1176[,2]  
+casa1predial <- casa1176[,3]  
+casa1seg <- casa1176[,4]  
+casa1total <- casa1176[,5] 
+
+#Atribuindo o valor de “casa1(...)” pelo total a um vetor. 
+vector1 <- c(casa1cond/casa1total, casa1alug/casa1total, casa1predial/casa1total, casa1seg/casa1total) 
+
+#Criando o gráfico. 
+dev.off()
+pie(vector1, main = "Composição dos Custos Totais: Casa 1176", labels = c("24,7%", "72,1%", "2,2%", "0,9%"), col = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80")) 
+legend("bottomright", fill = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80 "),legend = c("Condomínio R$", "Aluguel R$", "Contribuição Predial R$", "Seguro I ncêndio R$"),cex = 0.5, pt.cex = 1.5)
+
+#Criando a variável com os dados da segunda linha de “sphouses” e colunas que se relacionam com os custos totais. 
+casa2182 <- (potentialth[2,c(5,6,7,8,9)]) 
+
+#Atribuindo cada valor da coluna a uma variável 
+casa2cond <- casa2182[,1]  
+casa2alug <- casa2182[,2]
+casa2predial <- casa2182[,3]
+casa2seg <- casa2182[,4]
+casa2total <- casa2182[,5] 
+
+#Atribuindo o valor de “casa2(...)” pelo total a um vetor. 
+vector2 <- c(casa2cond/casa2total, casa2alug/casa2total, casa2predial/casa2total, casa2seg/casa2total) 
+
+#Criando o gráfico 
+
+pie(vector2, main = "Composição dos Custos Totais: Casa 2182", labels = c("", "98, 7%", "", "1,2%"), col = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80")) 
+legend("bottomright", fill = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80 "), legend = c("Condomínio R$", "Aluguel R$", "Contribuição Predial R$", "Seguro I ncêndio R$"),cex = 0.5, pt.cex = 1.5)
