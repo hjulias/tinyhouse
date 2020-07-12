@@ -101,7 +101,7 @@ vector1 <- c(casa1cond/casa1total, casa1alug/casa1total, casa1predial/casa1total
 #Criando o gráfico. 
 dev.off()
 pie(vector1, main = "Composição dos Custos Totais: Casa 1176", labels = c("24,7%", "72,1%", "2,2%", "0,9%"), col = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80")) 
-legend("bottomright", fill = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80 "),legend = c("Condomínio R$", "Aluguel R$", "Contribuição Predial R$", "Seguro I ncêndio R$"),cex = 0.5, pt.cex = 1.5)
+legend("bottomright", fill = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80 "),legend = c("Condomínio R$", "Aluguel R$", "Contribuição Predial R$", "Seguro Incêndio R$"),cex = 0.5, pt.cex = 1.5)
 
 #Criando a variável com os dados da segunda linha de “sphouses” e colunas que se relacionam com os custos totais. 
 casa2182 <- (potentialth[2,c(5,6,7,8,9)]) 
@@ -119,4 +119,4 @@ vector2 <- c(casa2cond/casa2total, casa2alug/casa2total, casa2predial/casa2total
 #Criando o gráfico 
 
 pie(vector2, main = "Composição dos Custos Totais: Casa 2182", labels = c("", "98, 7%", "", "1,2%"), col = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80")) 
-legend("bottomright", fill = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80 "), legend = c("Condomínio R$", "Aluguel R$", "Contribuição Predial R$", "Seguro I ncêndio R$"),cex = 0.5, pt.cex = 1.5)
+legend("bottomright", fill = c("mediumorchid1", "cadetblue3", "darkgreen", "gray80 "), legend = c("Condomínio R$", "Aluguel R$", "Contribuição Predial R$", "Seguro Incêndio R$"),cex = 0.5, pt.cex = 1.5)
